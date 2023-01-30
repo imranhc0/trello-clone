@@ -1,7 +1,7 @@
 import { Action } from "./actions"
 import { nanoid } from "nanoid"
-import { DragItem } from "../DragItem"
 import { findItemIndexById, moveItem } from "../utils/arrayUtils"
+import { DragItem } from "../DragItem"
 
 export type Task = {
   id: string
@@ -15,8 +15,8 @@ export type List = {
 }
 
 export type AppState = {
-  draggedItem: DragItem | null
   lists: List[]
+  draggedItem: DragItem | null
 }
 
 export const appStateReducer = (
@@ -81,6 +81,7 @@ export const appStateReducer = (
             hoveredItemId
           )
         : 0
+
       const item = draft.lists[sourceListIndex].tasks[dragIndex]
 
       // Remove the task from the source list

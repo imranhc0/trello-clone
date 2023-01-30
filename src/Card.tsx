@@ -22,6 +22,7 @@ export const Card = ({
 }: CardProps) => {
   const { draggedItem, dispatch } = useAppState()
   const ref = useRef<HTMLDivElement>(null)
+
   const { drag } = useItemDrag({
     type: "CARD",
     id,
@@ -29,34 +30,31 @@ export const Card = ({
     columnId
   })
 
-  const [, drop] = useDrop(
-    () => ({
-      accept: "CARD",
-      hover: throttle(200, () => {
-        if (!draggedItem) {
-          return
-        }
-        if (draggedItem.type !== "CARD") {
-          return
-        }
-        if (draggedItem.id === id) {
-          return
-        }
+  const [, drop] = useDrop({
+    accept: "CARD",
+    hover: throttle(200, () => {
+      if (!draggedItem) {
+        return
+      }
+      if (draggedItem.type !== "CARD") {
+        return
+      }
+      if (draggedItem.id === id) {
+        return
+      }
 
-        dispatch(
-          moveTask(draggedItem.id, id, draggedItem.columnId, columnId)
-        )
-        dispatch(setDraggedItem({ ...draggedItem, columnId }))
-      })
-    }),
-    [draggedItem]
-  )
+      dispatch(
+        moveTask(draggedItem.id, id, draggedItem.columnId, columnId)
+      )
+      dispatch(setDraggedItem({ ...draggedItem, columnId }))
+    })
+  })
 
   drag(drop(ref))
 
   return (
     <CardContainer
-      isHidden={isHidden(isPreview, draggedItem, "CARD", id)}
+      isHidden={isHidden(draggedItem, "CARD", id, isPreview)}
       isPreview={isPreview}
       ref={ref}
     >
